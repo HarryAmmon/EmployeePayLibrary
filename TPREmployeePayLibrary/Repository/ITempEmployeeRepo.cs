@@ -3,7 +3,7 @@ using TPREmployeePayLibrary.Entites;
 
 namespace TPREmployeePayLibrary.Repository
 {
-    public interface ITempEmployeeRepo: ICreateTemp, IReadTemp, IUpdateTemp, IDeleteTemp
+    public interface ITempEmployeeRepo: ITempReadable, ITempWriteable
     {   
         bool CheckTempEmployeeExists(string Name, out TempEmployee employee);
     }

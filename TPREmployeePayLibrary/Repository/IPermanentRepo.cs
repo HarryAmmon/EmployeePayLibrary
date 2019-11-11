@@ -3,7 +3,7 @@ using TPREmployeePayLibrary.Entites;
 
 namespace TPREmployeePayLibrary.Repository
 {
-    public interface IPermanentRepo: ICreatePermanent, IReadPermanent, IUpdatePermanent, IDeletePermanent
+    public interface IPermanentRepo: IPermanentReadable, IPermanentWriteable
     {
         bool CheckPermanentEmployeeExists(string Name, out PermanentEmployee employee);
     }

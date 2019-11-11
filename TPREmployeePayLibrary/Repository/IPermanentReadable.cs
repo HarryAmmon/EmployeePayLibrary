@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TPREmployeePayLibrary.Entites;
 
 namespace TPREmployeePayLibrary.Repository
 {
-    public interface IReadPermanent
+    public interface IPermanentReadable
     {
         List<PermanentEmployee> ReadPermanentEmployee(string Name);
 

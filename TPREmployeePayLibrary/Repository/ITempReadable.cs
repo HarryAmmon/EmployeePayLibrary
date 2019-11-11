@@ -5,7 +5,7 @@ using TPREmployeePayLibrary.Entites;
 
 namespace TPREmployeePayLibrary.Repository
 {
-    public interface IReadTemp
+    public interface ITempReadable
     {
         List<TempEmployee> ReadTempEmployee(string Name);
         List<TempEmployee> ReadAllTempEmployees();
