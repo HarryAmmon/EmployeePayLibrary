@@ -65,6 +65,12 @@ namespace TPREmployeePayLibrary.Repository
         {
             _log.Info($"Searching for Temp Employee. ID: {id}");
 
+            if(!_employees.Exists(x => x.EmployeeID.Equals(id)))
+            {
+                _log.Debug($"Temp Employee does not exist. ID: {id}");
+                return null;
+            }
+
             return _employees.Find(x => x.EmployeeID.Equals(id));
         }
 

@@ -64,6 +64,12 @@ namespace TPREmployeePayLibrary.Repository
         {
             _log.Info($"Searching for Permanent Employee. ID: {id}");
 
+            if(!_employees.Exists(x => x.EmployeeID.Equals(id)))
+            {
+                _log.Debug($"Employee does not exist. ID: {id}");
+                return null;
+            }
+
             return _employees.Find(x => x.EmployeeID.Equals(id));
            
         }
@@ -82,6 +88,7 @@ namespace TPREmployeePayLibrary.Repository
 
             try
             {
+
                 var fieldToUpdate = typeof(PermanentEmployee).GetType().GetProperty(field);
 
                 fieldToUpdate.SetValue(toUpdate, value);
@@ -98,30 +105,6 @@ namespace TPREmployeePayLibrary.Repository
                 _log.Error(ex.Message);
                 return false;
             }
-
-            //switch (field)
-            //{
-            //    case "name":
-            //        employeeToUpdate.Name = value;
-            //        _log.Debug($"Employee: {employee.EmployeeID} has had field {field} updated to {value}.");
-            //        break;
-            //    case "salary":
-            //        employeeToUpdate.AnnualSalary = decimal.Parse(value);
-            //        _log.Debug($"Employee: {employee.EmployeeID} has had field {field} updated to {value}.");
-            //        break;
-            //    case "bonus":
-            //        employeeToUpdate.AnnualBonus = decimal.Parse(value);
-            //        _log.Debug($"Employee: {employee.EmployeeID} has had field {field} updated to {value}.");
-            //        break;
-            //    case "endDate":
-            //        employeeToUpdate.EndDate = DateTimeOffset.Parse(value);
-            //        _log.Debug($"Employee: {employee.EmployeeID} has had field {field} updated to {value}.");
-            //        break;
-            //    default:
-            //        _log.Error($"{field} is not a valid type of field.");
-            //        return false;
-            //}
-            //return true;
         }
 
         public bool SaveChanges()
