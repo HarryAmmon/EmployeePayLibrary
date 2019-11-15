@@ -45,7 +45,7 @@ namespace TPREmployeePaySolution.Tests
             var employeeToDelete = SearchJSONForTempEmployee("TempPerson101")[0];
 
             // Act
-            repo.DeleteTempEmployee(employeeToDelete);
+            repo.DeleteTempEmployee(employeeToDelete.EmployeeID);
             var expectedResult = SearchJSONForTempEmployee(employeeToDelete.EmployeeID);
 
             // Assert
@@ -71,7 +71,7 @@ namespace TPREmployeePaySolution.Tests
             var employee = SearchJSONForTempEmployee("TempPerson100")[0];
 
             // Act
-            var actualResult = repo.ReadTempEmployee(employee.Name)[0];
+            var actualResult = repo.ReadTempEmployee(employee.EmployeeID);
 
             // Assert
             Assert.Equal(employee.EmployeeID, actualResult.EmployeeID);
@@ -86,7 +86,7 @@ namespace TPREmployeePaySolution.Tests
             var expectedName = "Samantha";
 
             // Act
-            repo.UpdateTempEmployee(employeeToUpdate, "name", expectedName);
+            repo.UpdateTempEmployee(employeeID, "name", expectedName);
             var actualName = SearchJSONForTempEmployee(employeeID).Name;
 
             // Assert
@@ -102,7 +102,7 @@ namespace TPREmployeePaySolution.Tests
             var expectedDailyRate = "62.11";
 
             // Act
-            repo.UpdateTempEmployee(employeeToUpdate, "dailyrate", expectedDailyRate);
+            repo.UpdateTempEmployee(employeeID, "dailyrate", expectedDailyRate);
             var actualDailyRate = SearchJSONForTempEmployee(employeeID).DailyRate;
 
             // Assert
