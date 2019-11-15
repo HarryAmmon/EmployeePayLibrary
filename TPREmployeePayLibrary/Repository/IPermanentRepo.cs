@@ -5,6 +5,5 @@ namespace TPREmployeePayLibrary.Repository
 {
     public interface IPermanentRepo: IPermanentReadable, IPermanentWriteable
     {
-        bool CheckPermanentEmployeeExists(string Name, out PermanentEmployee employee);
     }
 }
