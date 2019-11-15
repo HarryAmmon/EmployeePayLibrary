@@ -11,80 +11,64 @@ namespace TPREmployeePayLibrary.Repository
     {
         private readonly string JSONPath = @"..\employeeData\tempEmployee.JSON";
         private readonly ILog _log = LogManager.GetLogger(typeof(TempEmployeeRepositoryJSON));
+        private List<TempEmployee> _employees;
 
         public TempEmployeeRepositoryJSON()
         {
-            PopulateFile(); 
+            //PopulateFile(); 
+            _employees = LoadFromFile();
         }
 
         private void PopulateFile()
         {
-            var data = SeedData.GetTempEmployees();
-            WriteTempEmployeesToFile(data);
-        }
-
-        public bool CheckTempEmployeeExists(string Name, out TempEmployee employee)
-        {
-            var employees = ReadTempEmployeesFromFile();
-            if (employees.Exists(x => x.Name.Equals(Name)))
-            {
-                _log.Debug($"Employee \"{Name}\" exists.");
-                employee = employees.Find(x => x.Name.Equals(Name));
-                return true;
-            }
-            else
-            {
-                _log.Warn($"Could not find temp employee \"{Name}\".");
-                employee = null;
-                return false;
-            }
+            _employees = SeedData.GetTempEmployees();
+            SaveChanges();
         }
 
         public TempEmployee CreateTempEmployee(TempEmployee employee)
         {
-            var currentTempEmployees = ReadTempEmployeesFromFile();
             _log.Debug($"Adding Temp Employee. EmployeeID: {employee.EmployeeID}.");
-            currentTempEmployees.Add(employee);
-            WriteTempEmployeesToFile(currentTempEmployees);
+
+            _employees.Add(employee);
 
             return employee;
         }
 
-        public bool DeleteTempEmployee(TempEmployee employee)
+        public bool DeleteTempEmployee(Guid id)
         {
-            var currentTempEmployees = ReadTempEmployeesFromFile();
-            _log.Debug($"Removing Temp employee. EmployeeID: {employee.EmployeeID}.");
-            if (currentTempEmployees.Remove(currentTempEmployees.Find(x => x.EmployeeID.Equals(employee.EmployeeID))))
+            _log.Info($"Deleting Temp Employee. ID: {id}");
+
+            if (!_employees.Exists(x => x.EmployeeID.Equals(id)))
             {
-                _log.Info($"Temp Employee {employee.EmployeeID} was successfully deleted.");
-                WriteTempEmployeesToFile(currentTempEmployees);
-                return true;
-            }
-            else
-            {
-                _log.Error($"Temp Employee {employee.EmployeeID} could not be removed.");
+                _log.Warn($"Permanent Employee does not exist. ID: {id}");
                 return false;
             }
+
+            var toDelete = _employees.Find(x => x.EmployeeID.Equals(id));
+
+            if (!_employees.Remove(toDelete))
+            {
+                _log.Warn($"Could not delete permanent employee. ID: {id}");
+                return false;
+            }
+
+            _log.Info($"Delete succesful");
+            return true;
         }
 
         public List<TempEmployee> ReadAllTempEmployees()
         {
-            _log.Debug($"Reading all Temp Employees.");
-            var currentTempEmployees = ReadTempEmployeesFromFile();
-            _log.Debug($"{currentTempEmployees.Count} employees found.");
-            return currentTempEmployees;
+            return _employees;
         }
 
-        public List<TempEmployee> ReadTempEmployee(string Name)
+        public TempEmployee ReadTempEmployee(Guid id)
         {
-            _log.Debug($"Reading all Temp Employees with name \"{Name}\".");
-            var tempEmployees = ReadTempEmployeesFromFile();
-            var result = tempEmployees.FindAll(x => x.Name.Equals(Name));
-            _log.Debug($"{result.Count} employees found.");
-            return result;
+            _log.Info($"Searching for Temp Employee. ID: {id}");
+
+            return _employees.Find(x => x.EmployeeID.Equals(id));
         }
 
-        private List<TempEmployee> ReadTempEmployeesFromFile()
+        private List<TempEmployee> LoadFromFile()
         {
             var fileInfo = new FileInfo(JSONPath);
             if (!fileInfo.Exists)
@@ -103,53 +87,54 @@ namespace TPREmployeePayLibrary.Repository
             }
         }
 
-        public bool UpdateTempEmployee(TempEmployee employee, string field, string value)
+        public bool UpdateTempEmployee(Guid id, string field, string value)
         {
-            var currentTempEmployees = ReadTempEmployeesFromFile();
-            var employeeToUpdate = currentTempEmployees.Find(x => x.EmployeeID.Equals(employee.EmployeeID));
+            _log.Info($"Updating field: {field} for employee {id}");
 
-            switch (field)
+            if (_employees.Exists(x => x.EmployeeID.Equals(id)))
             {
-                case "name":
-                    employeeToUpdate.Name = value;
-                    _log.Debug($"Employee: {employee.EmployeeID} has had field {field} updated to {value}.");
-                    break;
-                case "dailyrate":
-                    employeeToUpdate.DailyRate = decimal.Parse(value);
-                    _log.Debug($"Employee: {employee.EmployeeID} has had field {field} updated to {value}.");
-                    break;
-                case "endDate":
-                    employeeToUpdate.EndDate = DateTimeOffset.Parse(value);
-                    _log.Debug($"Employee: {employee.EmployeeID} has had field {field} updated to {value}.");
-                    break;
-                default:
-                    _log.Error($"{field} is not a valid type of field.");
-                    throw new Exception("Field could not be found");
+                _log.Warn($"Temp Employee does not exist. ID: {id}");
+                return false;
             }
 
-            WriteTempEmployeesToFile(currentTempEmployees);
+            var toUpdate = _employees.Find(x => x.EmployeeID.Equals(id));
 
-            return true;
+            try
+            {
+                var fieldToUpdate = typeof(TempEmployee).GetType().GetProperty(field);
+
+                fieldToUpdate.SetValue(toUpdate, value);
+
+                return true;
+            }
+            catch (ArgumentNullException ex)
+            {
+                _log.Error(ex.Message);
+                return false;
+            }
+            catch (System.Reflection.AmbiguousMatchException ex)
+            {
+                _log.Error(ex.Message);
+                return false;
+            }
         }
 
-        private void WriteTempEmployeesToFile(IEnumerable<TempEmployee> tempEmployees)
+        public bool SaveChanges()
         {
             var fileInfo = new FileInfo(JSONPath);
             if (!fileInfo.Exists)
             {
-                _log.Info(fileInfo.FullName + " does not exist, creating file.");
                 fileInfo.Directory.Create();
-                fileInfo.Create().Dispose();
+                fileInfo.Create().Dispose(); File.Create(JSONPath).Dispose();
             }
             using (var file = File.CreateText(JSONPath))
             {
-                _log.Info(fileInfo.FullName + " has been opened.");
                 var serializer = new JsonSerializer
                 {
                     Formatting = Formatting.Indented
                 };
-                serializer.Serialize(file, tempEmployees);
-                _log.Info(fileInfo.FullName + " has been closed.");
+                serializer.Serialize(file, _employees);
+                return true;
             }
         }
     }

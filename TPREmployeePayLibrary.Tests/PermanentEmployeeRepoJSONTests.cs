@@ -46,7 +46,7 @@ namespace TPREmployeePaySolution.Tests
 
 
             // Act
-            repo.DeletePermanentEmployee(employeeToDelete);
+            repo.DeletePermanentEmployee(employeeToDelete.EmployeeID);
             var expectedResult = SearchJSONForPermanentEmployee(employeeToDelete.EmployeeID);
             // 
             Assert.Null(expectedResult);
@@ -65,13 +65,13 @@ namespace TPREmployeePaySolution.Tests
         }
 
         [Fact]
-        public void Can_Read_Permanent_Employee_Based_On_Name()
+        public void Can_Read_Permanent_Employee_Based_On_ID()
         {
             // Arrange
-            var employee = SearchJSONForPermanentEmployee("PermanentPerson100")[0];
+            var employee = SearchJSONForPermanentEmployee("")[0];
 
             // Act
-            var actualResult = repo.ReadPermanentEmployee(employee.Name)[0];
+            var actualResult = repo.ReadPermanentEmployee(employee.EmployeeID);
 
             // Assert
             Assert.Equal(employee.EmployeeID, actualResult.EmployeeID);
@@ -86,7 +86,7 @@ namespace TPREmployeePaySolution.Tests
             var expectedName = "Jeffery";
 
             // Act
-            repo.UpdatePermanentEmployee(employeeToUpdate, "name", expectedName);
+            repo.UpdatePermanentEmployee(employeeToUpdate.EmployeeID, "name", expectedName);
             var actualName = SearchJSONForPermanentEmployee(employeeID).Name;
 
             // Assert
@@ -102,7 +102,7 @@ namespace TPREmployeePaySolution.Tests
             var expectedSalary = "999666";
 
             // Act
-            repo.UpdatePermanentEmployee(employeeToUpdate, "salary", expectedSalary);
+            repo.UpdatePermanentEmployee(employeeToUpdate.EmployeeID, "salary", expectedSalary);
             var actualSalary = SearchJSONForPermanentEmployee(employeeID).AnnualSalary;
 
             // Assert
@@ -118,7 +118,7 @@ namespace TPREmployeePaySolution.Tests
             var expectedBonus = "40172";
 
             // Act
-            repo.UpdatePermanentEmployee(employeeToUpdate, "bonus", expectedBonus);
+            repo.UpdatePermanentEmployee(employeeToUpdate.EmployeeID, "bonus", expectedBonus);
             var actualBonus = SearchJSONForPermanentEmployee(employeeID).AnnualBonus;
 
             // Assert
