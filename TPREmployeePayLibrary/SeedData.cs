@@ -7,7 +7,7 @@ namespace TPREmployeePayLibrary
 {
     public class SeedData
     {
-        public static IEnumerable<PermanentEmployee> GetPermanentEmployees()
+        public static List<PermanentEmployee> GetPermanentEmployees()
         {
             return new List<PermanentEmployee>
             {
@@ -19,7 +19,7 @@ namespace TPREmployeePayLibrary
             };
         }
 
-        public static IEnumerable<TempEmployee> GetTempEmployees()
+        public static List<TempEmployee> GetTempEmployees()
         {
             return new List<TempEmployee>
             {
