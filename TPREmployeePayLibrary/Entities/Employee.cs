@@ -5,6 +5,7 @@ namespace TPREmployeePayLibrary.Entities
     public abstract class Employee
     {
         public Guid EmployeeID { get; set; }
+
         public string Name { get; set; }
 
         public DateTimeOffset StartDate { get; private set; }
