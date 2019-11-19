@@ -11,17 +11,29 @@ namespace TPREmployeePayLibrary.Repository
     {
         private readonly string JSONPath = @"..\employeeData\tempEmployee.JSON";
         private readonly ILog _log = LogManager.GetLogger(typeof(TempEmployeeRepositoryJSON));
-        private List<TempEmployee> _employees;
 
+        private List<TempEmployee> _employees;
+        
         public TempEmployeeRepositoryJSON()
         {
-            //PopulateFile(); 
             _employees = LoadFromFile();
+#if DEBUG
+            PopulateFile();
+# endif
         }
 
         private void PopulateFile()
         {
-            _employees = SeedData.GetTempEmployees();
+
+            var fileInfo = new FileInfo(JSONPath); // Delete the file
+            fileInfo.Delete();
+
+
+            var data = SeedData.GetTempEmployees();
+            foreach (var employee in data)
+            {
+                CreateTempEmployee(employee);
+            }
             SaveChanges();
         }
 
@@ -65,7 +77,7 @@ namespace TPREmployeePayLibrary.Repository
         {
             _log.Info($"Searching for Temp Employee. ID: {id}");
 
-            if(!_employees.Exists(x => x.EmployeeID.Equals(id)))
+            if (!_employees.Exists(x => x.EmployeeID.Equals(id)))
             {
                 _log.Debug($"Temp Employee does not exist. ID: {id}");
                 return null;
@@ -77,12 +89,15 @@ namespace TPREmployeePayLibrary.Repository
         private List<TempEmployee> LoadFromFile()
         {
             var fileInfo = new FileInfo(JSONPath);
-            if (!fileInfo.Exists)
+            if (fileInfo.Exists)
             {
-                _log.Info(fileInfo.FullName + " does not exist, creating file.");
-                fileInfo.Directory.Create();
-                fileInfo.Create().Dispose();
+                //_log.Info(fileInfo.FullName + " does not exist, creating file.");
+                fileInfo.Delete();    
             }
+
+            fileInfo.Directory.Create();
+            fileInfo.Create().Dispose();
+
             using (var file = File.OpenText(JSONPath))
             {
                 _log.Info(fileInfo.FullName + " has been opened.");

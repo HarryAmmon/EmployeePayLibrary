@@ -14,17 +14,29 @@ namespace TPREmployeePayLibrary.Repository
 
         private List<PermanentEmployee> _employees;
 
+
         public PermanentEmployeeRepositoryJSON()
         {
-            //populateFile();
-            LoadFromFile();
+            _employees = LoadFromFile();
+#if DEBUG
+            populateFile();
+#endif
+
         }
 
-        //private void populateFile()
-        //{
-        //    var data = SeedData.GetPermanentEmployees();
-        //    WritePermanentEmployeesToFile(data);
-        //}
+        private void populateFile()
+        {
+            var fileInfo = new FileInfo(JSONPath);
+            fileInfo.Delete();
+
+            var data = SeedData.GetPermanentEmployees();
+            foreach (var employee in data)
+            {
+                CreatePermanentEmployee(employee);
+            }
+
+            SaveChanges();
+        }
 
         public PermanentEmployee CreatePermanentEmployee(PermanentEmployee employee)
         {
@@ -37,7 +49,7 @@ namespace TPREmployeePayLibrary.Repository
         {
             _log.Info($"Deleting Permanent Employee. ID: {id}");
 
-            if(!_employees.Exists(x => x.EmployeeID.Equals(id)))
+            if (!_employees.Exists(x => x.EmployeeID.Equals(id)))
             {
                 _log.Warn($"Permanent Employee does not exist. ID: {id}");
                 return false;
@@ -64,26 +76,26 @@ namespace TPREmployeePayLibrary.Repository
         {
             _log.Info($"Searching for Permanent Employee. ID: {id}");
 
-            if(!_employees.Exists(x => x.EmployeeID.Equals(id)))
+            if (!_employees.Exists(x => x.EmployeeID.Equals(id)))
             {
                 _log.Debug($"Employee does not exist. ID: {id}");
                 return null;
             }
 
             return _employees.Find(x => x.EmployeeID.Equals(id));
-           
+
         }
 
         public bool UpdatePermanentEmployee(Guid id, string field, string value)
         {
             _log.Info($"Updating field: {field} for employee {id}");
-            
+
             if (_employees.Exists(x => x.EmployeeID.Equals(id)))
             {
                 _log.Warn($"Permanent Employee does not exist. ID: {id}");
                 return false;
             }
-            
+
             var toUpdate = _employees.Find(x => x.EmployeeID.Equals(id));
 
             try
@@ -113,7 +125,8 @@ namespace TPREmployeePayLibrary.Repository
             if (!fileInfo.Exists)
             {
                 fileInfo.Directory.Create();
-                fileInfo.Create().Dispose(); File.Create(JSONPath).Dispose();
+                fileInfo.Create().Dispose(); 
+                //File.Create(JSONPath).Dispose();
             }
             using (var file = File.CreateText(JSONPath))
             {
@@ -126,41 +139,29 @@ namespace TPREmployeePayLibrary.Repository
             }
         }
 
-        private void LoadFromFile()
+        private List<PermanentEmployee> LoadFromFile()
         {
             var fileInfo = new FileInfo(JSONPath);
-            if (!fileInfo.Exists)
+            if (fileInfo.Exists)
             {
-                _log.Info(fileInfo.FullName + " does not exist, creating file.");
-                fileInfo.Directory.Create();
-                fileInfo.Create().Dispose();
+                //_log.Info(fileInfo.FullName + " does not exist, creating file.");
+
+                fileInfo.Delete();
+
+                
             }
+
+            fileInfo.Directory.Create();
+            fileInfo.Create().Dispose();
+
             using (var file = File.OpenText(JSONPath))
             {
                 _log.Info(fileInfo.FullName + " has been opened.");
                 var serializer = new JsonSerializer();
-                _employees = (List<PermanentEmployee>)serializer.Deserialize(file, typeof(List<PermanentEmployee>)) ?? new List<PermanentEmployee>();
+                var _permEmployees = (List<PermanentEmployee>)serializer.Deserialize(file, typeof(List<PermanentEmployee>)) ?? new List<PermanentEmployee>();
+                _log.Info(fileInfo.FullName + " has been closed.");
+                return _permEmployees;
             }
-
-            _log.Info(fileInfo.FullName + " has been closed.");
-
         }
-
-        //public bool CheckPermanentEmployeeExists(string Name, out PermanentEmployee employee)
-        //{
-        //    var employees = ReadPermanentEmployeesFromFile();
-        //    if (employees.Exists(x => x.Name.Equals(Name)))
-        //    {
-        //        employee = employees.Find(x => x.Name.Equals(Name));
-        //        _log.Debug($"Employee \"{Name}\" exists.");
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        _log.Warn($"Could not find permanent employee \"{Name}\".");
-        //        employee = null;
-        //        return false;
-        //    }
-        //}
     }
 }
