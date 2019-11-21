@@ -12,19 +12,19 @@ namespace TPREmployeePayLibrary.Repository
         private readonly string JSONPath = @"..\employeeData\permanentEmployee.JSON";
         private readonly ILog _log = LogManager.GetLogger(typeof(PermanentEmployeeRepositoryJSON));
 
-        private List<PermanentEmployee> _employees;
+        private readonly List<PermanentEmployee> _employees;
 
 
         public PermanentEmployeeRepositoryJSON()
         {
             _employees = LoadFromFile();
 #if DEBUG
-            populateFile();
+            PopulateFile();
 #endif
 
         }
 
-        private void populateFile()
+        private void PopulateFile()
         {
             var fileInfo = new FileInfo(JSONPath);
             fileInfo.Delete();
@@ -128,15 +128,13 @@ namespace TPREmployeePayLibrary.Repository
                 fileInfo.Create().Dispose(); 
                 //File.Create(JSONPath).Dispose();
             }
-            using (var file = File.CreateText(JSONPath))
+            using var file = File.CreateText(JSONPath);
+            var serializer = new JsonSerializer
             {
-                var serializer = new JsonSerializer
-                {
-                    Formatting = Formatting.Indented
-                };
-                serializer.Serialize(file, _employees);
-                return true;
-            }
+                Formatting = Formatting.Indented
+            };
+            serializer.Serialize(file, _employees);
+            return true;
         }
 
         private List<PermanentEmployee> LoadFromFile()
@@ -154,14 +152,12 @@ namespace TPREmployeePayLibrary.Repository
             fileInfo.Directory.Create();
             fileInfo.Create().Dispose();
 
-            using (var file = File.OpenText(JSONPath))
-            {
-                _log.Info(fileInfo.FullName + " has been opened.");
-                var serializer = new JsonSerializer();
-                var _permEmployees = (List<PermanentEmployee>)serializer.Deserialize(file, typeof(List<PermanentEmployee>)) ?? new List<PermanentEmployee>();
-                _log.Info(fileInfo.FullName + " has been closed.");
-                return _permEmployees;
-            }
+            using var file = File.OpenText(JSONPath);
+            _log.Info(fileInfo.FullName + " has been opened.");
+            var serializer = new JsonSerializer();
+            var _permEmployees = (List<PermanentEmployee>)serializer.Deserialize(file, typeof(List<PermanentEmployee>)) ?? new List<PermanentEmployee>();
+            _log.Info(fileInfo.FullName + " has been closed.");
+            return _permEmployees;
         }
     }
 }
