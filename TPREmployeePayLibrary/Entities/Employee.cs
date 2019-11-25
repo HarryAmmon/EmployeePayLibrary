@@ -24,12 +24,12 @@ namespace TPREmployeePayLibrary.Entities
         {
             EmployeeID = Guid.NewGuid();
             this.Name = Name;
-            StartDate = DateTimeOffset.UtcNow.Date; // Might want to remove this functionality
         }
 
         public Employee(string Name, DateTimeOffset StartDate) : this(Name)
         {
             this.StartDate = StartDate;
+            this.EndDate = null;
         }
     }
 }
