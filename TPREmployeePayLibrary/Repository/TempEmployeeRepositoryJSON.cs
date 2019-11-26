@@ -108,36 +108,35 @@ namespace TPREmployeePayLibrary.Repository
             }
         }
 
-        public bool UpdateTempEmployee(Guid id, string field, string value)
+        public bool UpdateTempEmployee(TempEmployee employee)
         {
-            _log.Info($"Updating field: {field} for employee {id}");
+            // If an employee doesn't exist then you can't update it
+            _log.Info($"Updateing employee: {employee.EmployeeID}");
 
-            if (_employees.Exists(x => x.EmployeeID.Equals(id)))
+            var employeeToUpdate = ReadTempEmployee(employee.EmployeeID);
+
+            if (employeeToUpdate == null)
             {
-                _log.Warn($"Temp Employee does not exist. ID: {id}");
+                _log.Warn("Employee does not exist.");
                 return false;
             }
 
-            var toUpdate = _employees.Find(x => x.EmployeeID.Equals(id));
-
-            try
+            // Check that the new employee has the same ID and StartDate as the one to update
+            if (employeeToUpdate.EmployeeID != employee.EmployeeID)
             {
-                var fieldToUpdate = typeof(TempEmployee).GetType().GetProperty(field);
-
-                fieldToUpdate.SetValue(toUpdate, value);
-
-                return true;
-            }
-            catch (ArgumentNullException ex)
-            {
-                _log.Error(ex.Message);
+                _log.Warn("EmployeeId's do not match");
                 return false;
             }
-            catch (System.Reflection.AmbiguousMatchException ex)
+            if (employeeToUpdate.StartDate != employee.StartDate)
             {
-                _log.Error(ex.Message);
+                _log.Warn("EmployeeId's do not match");
                 return false;
             }
+
+            DeleteTempEmployee(employeeToUpdate.EmployeeID);
+            CreateTempEmployee(employee);
+
+            return SaveChanges();
         }
 
         public bool SaveChanges()
