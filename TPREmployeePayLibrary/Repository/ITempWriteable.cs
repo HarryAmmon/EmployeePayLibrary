@@ -10,10 +10,10 @@ namespace TPREmployeePayLibrary.Repository
 
         TempEmployee CreateTempEmployee(TempEmployee employee);
 
-        bool UpdateTempEmployee(Guid id, string field, string value);
+        bool UpdateTempEmployee(TempEmployee employee);
 
         bool DeleteTempEmployee(Guid id);
-
+        
         bool SaveChanges();
 
     }

@@ -86,46 +86,13 @@ namespace TPREmployeePayLibrary.Repository
 
         }
 
-        public bool UpdatePermanentEmployee(Guid id, string field, string value)
-        {
-            _log.Info($"Updating field: {field} for employee {id}");
-
-            if (_employees.Exists(x => x.EmployeeID.Equals(id)))
-            {
-                _log.Warn($"Permanent Employee does not exist. ID: {id}");
-                return false;
-            }
-
-            var toUpdate = _employees.Find(x => x.EmployeeID.Equals(id));
-
-            try
-            {
-
-                var fieldToUpdate = typeof(PermanentEmployee).GetType().GetProperty(field);
-
-                fieldToUpdate.SetValue(toUpdate, value);
-
-                return true;
-            }
-            catch (ArgumentNullException ex)
-            {
-                _log.Error(ex.Message);
-                return false;
-            }
-            catch (System.Reflection.AmbiguousMatchException ex)
-            {
-                _log.Error(ex.Message);
-                return false;
-            }
-        }
-
         public bool SaveChanges()
         {
             var fileInfo = new FileInfo(JSONPath);
             if (!fileInfo.Exists)
             {
                 fileInfo.Directory.Create();
-                fileInfo.Create().Dispose(); 
+                fileInfo.Create().Dispose();
                 //File.Create(JSONPath).Dispose();
             }
             using var file = File.CreateText(JSONPath);
@@ -143,10 +110,7 @@ namespace TPREmployeePayLibrary.Repository
             if (fileInfo.Exists)
             {
                 //_log.Info(fileInfo.FullName + " does not exist, creating file.");
-
                 fileInfo.Delete();
-
-                
             }
 
             fileInfo.Directory.Create();
@@ -158,6 +122,37 @@ namespace TPREmployeePayLibrary.Repository
             var _permEmployees = (List<PermanentEmployee>)serializer.Deserialize(file, typeof(List<PermanentEmployee>)) ?? new List<PermanentEmployee>();
             _log.Info(fileInfo.FullName + " has been closed.");
             return _permEmployees;
+        }
+
+        public bool UpdatePermanentEmployee(PermanentEmployee employee)
+        {
+            // If an employee doesn't exist then you can't update it
+            _log.Info($"Updateing employee: {employee.EmployeeID}");
+            
+            var employeeToUpdate = ReadPermanentEmployee(employee.EmployeeID);
+
+            if(employeeToUpdate == null)
+            {
+                _log.Warn("Employee does not exist.");
+                return false;
+            }
+
+            // Check that the new employee has the same ID and StartDate as the one to update
+            if(employeeToUpdate.EmployeeID != employee.EmployeeID)
+            {
+                _log.Warn("EmployeeId's do not match");
+                return false;
+            }
+            if(employeeToUpdate.StartDate != employee.StartDate)
+            {
+                _log.Warn("EmployeeId's do not match");
+                return false;
+            }
+            
+            DeletePermanentEmployee(employeeToUpdate.EmployeeID);
+            CreatePermanentEmployee(employee);
+
+            return SaveChanges();
         }
     }
 }
