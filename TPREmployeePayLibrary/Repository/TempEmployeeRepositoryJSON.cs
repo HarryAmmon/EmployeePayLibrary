@@ -127,9 +127,9 @@ namespace TPREmployeePayLibrary.Repository
                 _log.Warn("EmployeeId's do not match");
                 return false;
             }
-            if (employeeToUpdate.StartDate != employee.StartDate)
+            if (employeeToUpdate.StartDate.Date != employee.StartDate.Date)
             {
-                _log.Warn("EmployeeId's do not match");
+                _log.Warn("Employee's Start Date do not match");
                 return false;
             }
 

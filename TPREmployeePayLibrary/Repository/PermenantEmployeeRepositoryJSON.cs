@@ -83,7 +83,6 @@ namespace TPREmployeePayLibrary.Repository
             }
 
             return _employees.Find(x => x.EmployeeID.Equals(id));
-
         }
 
         public bool SaveChanges()
@@ -143,12 +142,12 @@ namespace TPREmployeePayLibrary.Repository
                 _log.Warn("EmployeeId's do not match");
                 return false;
             }
-            if(employeeToUpdate.StartDate != employee.StartDate)
+            if (employeeToUpdate.StartDate.Date != employee.StartDate.Date)
             {
                 _log.Warn("EmployeeId's do not match");
                 return false;
             }
-            
+
             DeletePermanentEmployee(employeeToUpdate.EmployeeID);
             CreatePermanentEmployee(employee);
 
