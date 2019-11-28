@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using TPREmployeePayLibrary.Entites;
-
-namespace TPREmployeePayLibrary.Repository
+﻿namespace TPREmployeePayLibrary.Repository
 {
-    public interface ITempEmployeeRepo: ITempReadable, ITempWriteable
-    {   
+    public interface ITempEmployeeRepo : ITempReadable, ITempWriteable
+    {
     }
 }

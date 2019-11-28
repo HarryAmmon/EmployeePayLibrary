@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using TPREmployeePayLibrary.Entites;
+using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Repository
 {

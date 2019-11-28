@@ -1,4 +1,4 @@
-﻿using TPREmployeePayLibrary.Entites;
+﻿using TPREmployeePayLibrary.Entities;
 using System;
 
 namespace TPREmployeePayLibrary.Repository

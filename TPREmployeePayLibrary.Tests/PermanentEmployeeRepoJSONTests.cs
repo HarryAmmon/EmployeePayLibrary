@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using TPREmployeePayLibrary.Entites;
+using TPREmployeePayLibrary.Entities;
 using TPREmployeePayLibrary.Repository;
 using TPREmployeePayLibrary.Tests;
 using Xunit;

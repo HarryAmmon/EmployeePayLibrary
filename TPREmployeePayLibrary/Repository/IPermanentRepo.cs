@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using TPREmployeePayLibrary.Entites;
-
-namespace TPREmployeePayLibrary.Repository
+﻿namespace TPREmployeePayLibrary.Repository
 {
-    public interface IPermanentRepo: IPermanentReadable, IPermanentWriteable
+    public interface IPermanentRepo : IPermanentReadable, IPermanentWriteable
     {
     }
 }

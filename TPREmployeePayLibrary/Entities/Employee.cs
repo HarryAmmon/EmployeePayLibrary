@@ -2,7 +2,7 @@
 
 namespace TPREmployeePayLibrary.Entities
 {
-    public abstract class Employee
+    public class Employee
     {
         public Guid EmployeeID { get; set; }
 

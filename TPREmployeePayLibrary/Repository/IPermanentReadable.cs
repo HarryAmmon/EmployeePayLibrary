@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TPREmployeePayLibrary.Entites;
+using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Repository
 {

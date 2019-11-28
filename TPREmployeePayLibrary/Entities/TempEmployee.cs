@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using TPREmployeePayLibrary.Entities;
 
-namespace TPREmployeePayLibrary.Entites
+namespace TPREmployeePayLibrary.Entities
 {
     public class TempEmployee : Employee
     {

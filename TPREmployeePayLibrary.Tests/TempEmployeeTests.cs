@@ -1,5 +1,5 @@
 ﻿using System;
-using TPREmployeePayLibrary.Entites;
+using TPREmployeePayLibrary.Entities;
 using Xunit;
 
 namespace TPREmployeePaySolution.Tests

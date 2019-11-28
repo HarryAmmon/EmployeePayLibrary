@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TPREmployeePayLibrary.Entites;
+using TPREmployeePayLibrary.Entities;
 using TPREmployeePayLibrary.Repository;
 
 namespace TPREmployeePayLibrary.Tests
