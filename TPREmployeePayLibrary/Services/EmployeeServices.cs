@@ -11,9 +11,15 @@ namespace TPREmployeePayLibrary.Services
 
         public double CalcWeeksWorked(DateTimeOffset StartDate, DateTimeOffset EndDate)
         {
-
             _Log.Info($"Calculating WeeksWorked with Start Date and End Date");
-            if (StartDate <= EndDate)
+            
+            if(StartDate > DateTimeOffset.Now)
+            {
+                _Log.Info("Current Date is before start date.");
+                _Log.Info("Calculation successful");
+                return 0;
+            }
+            else if (StartDate <= EndDate)
             {
                 var result = (EndDate - StartDate).TotalDays / 7;
                 _Log.Info($"Calculation successful.");
@@ -29,12 +35,19 @@ namespace TPREmployeePayLibrary.Services
         public double CalcWeeksWorked(DateTimeOffset StartDate)
         {
             _Log.Info($"Calculating WeeksWorked with Start Date and Todays Date: {DateTimeOffset.Now}");
+            if (StartDate > DateTimeOffset.Now)
+            {
+                _Log.Info("Current Date is before start date.");
+                _Log.Info("Calculation successful");
+                return 0;
+            }
+            else
+            {
+                var result = (DateTimeOffset.Now - StartDate).TotalDays / 7;
+                _Log.Info($"Calculation successful.");
+                return result;
+            }
             
-            var result = (DateTimeOffset.Now - StartDate).TotalDays / 7;
-            
-            _Log.Info($"Calculation successful.");
-            
-            return result;
         }
     }
 }
