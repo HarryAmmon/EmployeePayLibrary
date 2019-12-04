@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,26 +9,45 @@ namespace TPREmployeePayLibrary.Services
     {
         private readonly ILog _Log = LogManager.GetLogger(typeof(EmployeeServices));
 
-        public EmployeeServices()
+        public double CalcWeeksWorked(DateTimeOffset StartDate, DateTimeOffset EndDate)
         {
-        }
-
-        public double CalcWeeksWorked(DateTimeOffset StartDate, DateTimeOffset? EndDate)
-        {
-            if (EndDate == null) { EndDate = DateTimeOffset.UtcNow.Date; }
-            double weeksWorked;
-            _Log.Info($"Calculating WeeksWorked");
-            if (StartDate >= EndDate)
+            _Log.Info($"Calculating WeeksWorked with Start Date and End Date");
+            
+            if(StartDate > DateTimeOffset.Now)
             {
-                weeksWorked = (StartDate - EndDate).Value.Days / 7;
+                _Log.Info("Current Date is before start date.");
+                _Log.Info("Calculation successful");
+                return 0;
+            }
+            else if (StartDate <= EndDate)
+            {
+                var result = (EndDate - StartDate).TotalDays / 7;
+                _Log.Info($"Calculation successful.");
+                return result;
             }
             else
             {
-                weeksWorked = -1;
                 _Log.Error($"Unable to calculate weeks worked as the start date was the same or later than the end date! StartDate: {StartDate} EndDate: {EndDate}.");
                 throw new Exception();
             }
-            return weeksWorked;
+        }
+
+        public double CalcWeeksWorked(DateTimeOffset StartDate)
+        {
+            _Log.Info($"Calculating WeeksWorked with Start Date and Todays Date: {DateTimeOffset.Now}");
+            if (StartDate > DateTimeOffset.Now)
+            {
+                _Log.Info("Current Date is before start date.");
+                _Log.Info("Calculation successful");
+                return 0;
+            }
+            else
+            {
+                var result = (DateTimeOffset.Now - StartDate).TotalDays / 7;
+                _Log.Info($"Calculation successful.");
+                return result;
+            }
+            
         }
     }
 }
