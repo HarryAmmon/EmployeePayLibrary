@@ -41,6 +41,10 @@ namespace TPREmployeePayLibrary.Repository
         {
             _log.Debug($"Adding Temp Employee. EmployeeID: {employee.EmployeeID}.");
 
+            if (employee.EmployeeID.Equals(Guid.Empty))
+            {
+                employee.EmployeeID = Guid.NewGuid();
+            }
             _employees.Add(employee);
 
             return employee;

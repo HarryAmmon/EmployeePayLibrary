@@ -41,6 +41,10 @@ namespace TPREmployeePayLibrary.Repository
         public PermanentEmployee CreatePermanentEmployee(PermanentEmployee employee)
         {
             _log.Debug($"Adding Permanent Employee. EmployeeID: {employee.EmployeeID}.");
+            if (employee.EmployeeID.Equals(Guid.Empty))
+            {
+                employee.EmployeeID = Guid.NewGuid();
+            }
             _employees.Add(employee);
             return employee;
         }
