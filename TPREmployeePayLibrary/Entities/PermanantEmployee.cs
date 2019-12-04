@@ -8,7 +8,8 @@ namespace TPREmployeePayLibrary.Entities
 
         public decimal AnnualSalary { get; set; }
         public decimal AnnualBonus { get; set; }
-
+        public decimal AnnualPay { get; set; }
+        public decimal HourlyPay { get; set; }
         public PermanentEmployee(string Name) : base(Name)
         {
             this.Type = EmployeeType.Permanent;
@@ -24,7 +25,6 @@ namespace TPREmployeePayLibrary.Entities
                 this.Type = EmployeeType.Permanent;
             }
             else { throw new Exception("Annual Salary and Annual Bonus must be 0 or greater."); }
-
         }
     }
 }

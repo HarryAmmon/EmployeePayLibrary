@@ -6,6 +6,8 @@ namespace TPREmployeePayLibrary.Entities
     public class TempEmployee : Employee
     {
         public decimal DailyRate { get; set; }
+        public decimal HourlyPay { get; set; }
+        public decimal AnnualPay { get; set; }
 
         public TempEmployee(string Name) : base(Name)
         {
