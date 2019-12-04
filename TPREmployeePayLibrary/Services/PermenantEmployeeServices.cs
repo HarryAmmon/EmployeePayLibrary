@@ -1,26 +1,25 @@
 ﻿using log4net;
+using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Services
 {
-    public class PermanentEmployeeServices : IPermanentEmployeeServices
+    public static class PermanentEmployeeServices 
     {
-        protected readonly ILog _log = LogManager.GetLogger(typeof(PermanentEmployeeServices));
-        public PermanentEmployeeServices()
+        private static readonly ILog _log = LogManager.GetLogger(typeof(PermanentEmployeeServices));
+
+        public static decimal CalculateAnnualPay(this PermanentEmployee employee)
         {
-        }
-        public decimal CalculateAnnualPay(decimal AnnualSalary, decimal AnnualBonus)
-        {
-            decimal annualPay = AnnualSalary + AnnualBonus;
+            decimal annualPay = employee.AnnualSalary + employee.AnnualBonus;
             _log.Debug($"Calculated annual pay {annualPay}");
-            _log.Info($"AnnualSalary: {AnnualSalary}, AnnualBonus: {AnnualBonus}");
+            _log.Info($"AnnualSalary: {employee.AnnualSalary}, AnnualBonus: {employee.AnnualBonus}");
             return annualPay;
         }
 
-        public virtual decimal CalculateHourlyPay(decimal AnnualSalary)
+        public static decimal CalculateHourlyPay(this PermanentEmployee employee)
         {
-            decimal hourlyPay = (((AnnualSalary / 52) / 5) / 7);
+            decimal hourlyPay = (((employee.AnnualSalary / 52) / 5) / 7);
             _log.Debug($"Calculated hourly pay {hourlyPay}");
-            _log.Info($"AnnualSalary: {AnnualSalary}");
+            _log.Info($"AnnualSalary: {employee.AnnualSalary}");
             return hourlyPay;
         }
     }

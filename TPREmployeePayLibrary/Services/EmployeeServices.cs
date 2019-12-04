@@ -10,7 +10,7 @@ namespace TPREmployeePayLibrary.Services
     {
         private static readonly ILog _Log = LogManager.GetLogger(typeof(EmployeeServices));
 
-        public static double CalcWeeksWorked(this Employee employee)//DateTimeOffset StartDate, DateTimeOffset EndDate)
+        public static double CalcWeeksWorked(this Employee employee)
         {
             _Log.Info($"Calculating WeeksWorked for employee: {employee.EmployeeID}.");
             
