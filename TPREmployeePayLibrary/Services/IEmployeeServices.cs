@@ -4,7 +4,6 @@ namespace TPREmployeePayLibrary.Services
 {
     public interface IEmployeeServices
     {
-        double CalcWeeksWorked(DateTimeOffset StartDate);
-        double CalcWeeksWorked(DateTimeOffset StartDate, DateTimeOffset EndDate);
+        double CalcWeeksWorked(DateTimeOffset StartDate, DateTimeOffset? EndDate);
     }
 }
