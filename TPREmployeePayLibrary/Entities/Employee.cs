@@ -10,8 +10,8 @@ namespace TPREmployeePayLibrary.Entities
 
         public DateTimeOffset StartDate { get; private set; }
 
-        public DateTimeOffset? EndDate { get; set; }
-
+        public DateTimeOffset EndDate { get; set; }
+        public double WeeksWorked { get; set; }
         public enum EmployeeType
         {
             Permanent,
@@ -29,7 +29,7 @@ namespace TPREmployeePayLibrary.Entities
         public Employee(string Name, DateTimeOffset StartDate) : this(Name)
         {
             this.StartDate = StartDate;
-            this.EndDate = null;
+            this.EndDate = DateTimeOffset.MinValue;
         }
     }
 }

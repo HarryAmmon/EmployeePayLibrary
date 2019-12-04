@@ -2,52 +2,37 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Services
 {
-    public class EmployeeServices : IEmployeeServices
+    public static class EmployeeServices
     {
-        private readonly ILog _Log = LogManager.GetLogger(typeof(EmployeeServices));
+        private static readonly ILog _Log = LogManager.GetLogger(typeof(EmployeeServices));
 
-        public double CalcWeeksWorked(DateTimeOffset StartDate, DateTimeOffset EndDate)
+        public static double CalcWeeksWorked(this Employee employee)//DateTimeOffset StartDate, DateTimeOffset EndDate)
         {
-            _Log.Info($"Calculating WeeksWorked with Start Date and End Date");
+            _Log.Info($"Calculating WeeksWorked for employee: {employee.EmployeeID}.");
             
-            if(StartDate > DateTimeOffset.Now)
+            if(employee.StartDate > DateTimeOffset.Now)
             {
                 _Log.Info("Current Date is before start date.");
                 _Log.Info("Calculation successful");
                 return 0;
             }
-            else if (StartDate <= EndDate)
+            else if (employee.EndDate == DateTimeOffset.MinValue)
             {
-                var result = (EndDate - StartDate).TotalDays / 7;
+                var result = (DateTimeOffset.Now - employee.StartDate).TotalDays / 7;
+                _Log.Info($"Using the current date for calculation.");
                 _Log.Info($"Calculation successful.");
                 return result;
             }
             else
             {
-                _Log.Error($"Unable to calculate weeks worked as the start date was the same or later than the end date! StartDate: {StartDate} EndDate: {EndDate}.");
-                throw new Exception();
-            }
-        }
-
-        public double CalcWeeksWorked(DateTimeOffset StartDate)
-        {
-            _Log.Info($"Calculating WeeksWorked with Start Date and Todays Date: {DateTimeOffset.Now}");
-            if (StartDate > DateTimeOffset.Now)
-            {
-                _Log.Info("Current Date is before start date.");
-                _Log.Info("Calculation successful");
-                return 0;
-            }
-            else
-            {
-                var result = (DateTimeOffset.Now - StartDate).TotalDays / 7;
-                _Log.Info($"Calculation successful.");
+                var result = (employee.EndDate - employee.StartDate).TotalDays / 7;
+                _Log.Info($"Calculation successful");
                 return result;
             }
-            
         }
     }
 }
