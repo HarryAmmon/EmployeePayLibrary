@@ -2,7 +2,7 @@
 using TPREmployeePayLibrary.Entities;
 using Xunit;
 
-namespace TPREmployeePaySolution.Tests
+namespace TPREmployeePayLibrary.Tests
 {
     public class PermanentEmployeeTests
     {

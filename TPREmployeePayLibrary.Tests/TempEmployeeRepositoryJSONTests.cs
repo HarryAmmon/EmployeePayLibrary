@@ -9,7 +9,7 @@ using TPREmployeePayLibrary.Repository;
 using TPREmployeePayLibrary.Tests;
 using Xunit;
 
-namespace TPREmployeePaySolution.Tests
+namespace TPREmployeePayLibrary.Tests
 {
     public class TempEmployeeRepoJSONTest
     {
