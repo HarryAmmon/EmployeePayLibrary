@@ -65,13 +65,13 @@ namespace TPREmployeePaySolution.Tests
         }
 
         [Fact]
-        public void Permanent_Employee_Will_Have_Null_End_Date_By_Default()
+        public void Permanent_Employee_Will_Have_MinValue_End_Date_By_Default()
         {
             // Act
             var employee = new PermanentEmployee("Harry", 33000, 3000, new DateTimeOffset(2019, 10, 9, 0, 0, 0, TimeSpan.Zero));
 
             // Assert
-            Assert.Null(employee.EndDate);
+            Assert.Equal(DateTimeOffset.MinValue, employee.EndDate);
         }
 
         [Fact]
