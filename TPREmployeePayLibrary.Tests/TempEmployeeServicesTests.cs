@@ -1,50 +1,39 @@
-﻿using log4net;
-using Moq;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using TPREmployeePayLibrary.Entities;
 using TPREmployeePayLibrary.Services;
 using Xunit;
-
-namespace TPREmployeePaySolution.Tests
+namespace TPREmployeePayLibrary.Tests
 {
     public class TempEmployeeServicesTests
     {
-        private static TempEmployeeServices _services;
-        private readonly Mock<ILog> _log;
-
-        public TempEmployeeServicesTests()
-        {
-
-            _log = new Mock<ILog>();
-            _services = new TempEmployeeServices();
-        }
-
         [Theory]
-        [InlineData(56, 5, 1400)]
-        [InlineData(10, 5.5, 275)]
-        [InlineData(13, 0, 0)]
-        public void Can_Calculate_Annual_Pay(decimal DailyRate, double WeeksWorked, decimal expectedAnnualPay)
+        [InlineData(-14,7,150)]
+        [InlineData(-22,-1,150)]
+        public void CalculateAnnualPay_Returns_Expected_Result(int startDateOffset, int endDateOffset, decimal expectedResult)
         {
             // Arrange
-
+            var employee = new TempEmployee("Jeff",10,DateTimeOffset.UtcNow.AddDays(startDateOffset));
+            employee.EndDate = DateTimeOffset.UtcNow.AddDays(endDateOffset);
             // Act
-            var actualAnnualPay = _services.CalculateAnnualPay(DailyRate, WeeksWorked);
+            var actualResult = employee.CalculateAnnualPay();
+
             // Assert
-            Assert.Equal(expectedAnnualPay, actualAnnualPay, 2);
+            Assert.Equal(expectedResult, actualResult, 2);
 
         }
 
         [Theory]
-        [InlineData(0, -1)]
-        [InlineData(49, 7)]
-        [InlineData(23, 3.29)]
-        public void Can_Calculate_Hourly_Pay(decimal DailyRate, decimal expectedHourlyPay)
+        [InlineData(28,4)]
+        [InlineData(42,6)]
+        public void CalculateHourlyPay_Returns_Expected_Result(decimal dailyRate, decimal expectedResult)
         {
-            // Arrange
+            var employee = new TempEmployee("Peter", dailyRate, DateTimeOffset.UtcNow);
 
-            // Act
-            var actualHourlyPay = _services.CalculateHourlyPay(DailyRate);
+            var actualResult = employee.CalculateHourlyPay();
 
-            // Assert
-            Assert.Equal(expectedHourlyPay, actualHourlyPay, 2);
+            Assert.Equal(expectedResult, actualResult, 2);
         }
     }
 }

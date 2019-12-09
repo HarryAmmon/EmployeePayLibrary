@@ -1,7 +1,5 @@
 using log4net;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Services
@@ -13,8 +11,8 @@ namespace TPREmployeePayLibrary.Services
         public static double CalcWeeksWorked(this Employee employee)
         {
             _Log.Info($"Calculating WeeksWorked for employee: {employee.EmployeeID}.");
-            
-            if(employee.StartDate > DateTimeOffset.Now)
+
+            if (employee.StartDate > DateTimeOffset.Now)
             {
                 _Log.Info("Current Date is before start date.");
                 _Log.Info("Calculation successful");

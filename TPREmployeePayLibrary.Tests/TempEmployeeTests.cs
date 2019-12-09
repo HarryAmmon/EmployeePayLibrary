@@ -2,7 +2,7 @@
 using TPREmployeePayLibrary.Entities;
 using Xunit;
 
-namespace TPREmployeePaySolution.Tests
+namespace TPREmployeePayLibrary.Tests
 {
     public class TempEmployeeTests
     {
@@ -64,36 +64,31 @@ namespace TPREmployeePaySolution.Tests
         }
 
         [Fact]
-        public void TempEmployee_Will_Have_Null_EndDate_By_Default()
+        public void TempEmployee_Will_Have_MinValue_EndDate_By_Default()
         {
             // Act
             var employee = new TempEmployee("Harry", 5000.2m, new DateTimeOffset(2019, 10, 9, 0, 0, 0, TimeSpan.Zero));
 
             // Assert
-            Assert.Null(employee.EndDate);
+            Assert.Equal(DateTimeOffset.MinValue, employee.EndDate);
         }
 
         [Fact]
         public void Temp_Employee_Can_Have_Name()
         {
-            // Arrange
-            var expectedName = "Harry";
-
             // Act
             var actualName = _employee.Name;
 
             // Assert
-            Assert.Equal(expectedName, actualName);
-
-
+            Assert.NotNull(actualName);
         }
+
         [Fact]
         public void Temp_Employee_Can_Have_DailyRate()
         {
-            // Arrange
             var expectedDailyRate = 8.22m;
 
-            // act
+            // Act
             var actualDailyRate = _employee.DailyRate;
 
             // Assert
@@ -111,6 +106,16 @@ namespace TPREmployeePaySolution.Tests
 
             // Assert
             Assert.Equal(expectedType, actualType);
+        }
+
+        [Fact]
+        public void Temp_Employee_Has_Id()
+        {
+            // Arrange
+            var actualId = _employee.EmployeeID;
+
+            // Assert
+            Assert.NotEqual(Guid.Empty, actualId);
         }
     }
 }

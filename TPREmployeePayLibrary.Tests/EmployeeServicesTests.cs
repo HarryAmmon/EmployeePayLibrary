@@ -1,50 +1,59 @@
-﻿using log4net;
-using log4net.Config;
+﻿using Moq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+using System.Text;
+using TPREmployeePayLibrary.Entities;
 using TPREmployeePayLibrary.Services;
 using Xunit;
 
-namespace TPREmployeePaySolution.Tests
+namespace TPREmployeePayLibrary.Tests
 {
-    public class TestData : IEnumerable<Object[]>
-    {
-        private readonly List<object[]> _data = new List<object[]>
-        {
-        new object[] {new DateTimeOffset(2018,5,4,0,0,0,TimeSpan.Zero), new DateTimeOffset(2019,5, 4, 0, 0, 0,TimeSpan.Zero), 52.14 },
-        new object[] {new DateTimeOffset(2018,9, 2,0, 0, 0, TimeSpan.Zero), new DateTimeOffset(2017,9,10, 0, 0, 0, TimeSpan.Zero), 0},
-        new object[] {new DateTimeOffset(2019,10,8, 0, 0, 0, TimeSpan.Zero), new DateTimeOffset(2020,12,24, 0, 0, 0, TimeSpan.Zero), 63.29}
-        };
-
-        public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-
     public class EmployeeServicesTests
     {
-
-        public EmployeeServices employeeServices;
-        private readonly ILog log;
+        public readonly DateTimeOffset NextWeek = DateTimeOffset.UtcNow.AddDays(7).Date;
+        //public readonly Mock<DateTimeOffset> _dateTimeOffset;
         public EmployeeServicesTests()
         {
-            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
-
-            log = LogManager.GetLogger(typeof(EmployeeServicesTests));
-            employeeServices = new EmployeeServices();
+            //_dateTimeOffset = new Mock<DateTimeOffset>();
         }
 
-
-        [Theory]
-        [ClassData(typeof(TestData))]
-        public void Can_Calculate_An_Employees_WeeksWorked(DateTimeOffset startDate, DateTimeOffset endDate, double expectedResult)
+        [Fact]
+        public void StartDate_After_Current_Date_WeeksWorked_Zero()
         {
+            // Arrange
+            var employee = new PermanentEmployee("Toby", 100.00m, 1m, DateTimeOffset.UtcNow.AddDays(7));
+            var expectedResult = 0;
+
             // Act
-            var actualResult = employeeServices.CalcWeeksWorked(startDate, endDate);
+            var actualResult = employee.CalcWeeksWorked();
+
+            // Assert
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void CalcWeeksWorked_Returns_Expected_Result_When_EndDate_MinValue()
+        {
+            // Arrange
+            var employee = new PermanentEmployee("Richard", 10.0m, 1.1m, DateTimeOffset.UtcNow.AddDays(-7));
+            var expectedResult = (DateTimeOffset.Now - employee.StartDate).TotalDays / 7;
+            // Act
+            var actualResult = employee.CalcWeeksWorked();
+
+            // Assert
+            Assert.Equal(expectedResult, actualResult,2);
+        }
+
+        [Fact]
+        public void CalcWeeksWorked_Returns_Expected_Result_When_EndDate_Is_After_StartDate()
+        {
+            // Arrange
+            var employee = new PermanentEmployee("Richard", 10.0m, 1.1m, DateTimeOffset.UtcNow.AddDays(-7));
+            employee.EndDate = DateTimeOffset.UtcNow.AddDays(-6);
+            var expectedResult = (employee.EndDate - employee.StartDate).TotalDays / 7;
+
+            // Act
+            var actualResult = employee.CalcWeeksWorked();
 
             // Assert
             Assert.Equal(expectedResult, actualResult, 2);

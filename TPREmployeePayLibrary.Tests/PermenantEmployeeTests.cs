@@ -2,7 +2,7 @@
 using TPREmployeePayLibrary.Entities;
 using Xunit;
 
-namespace TPREmployeePaySolution.Tests
+namespace TPREmployeePayLibrary.Tests
 {
     public class PermanentEmployeeTests
     {
@@ -21,30 +21,25 @@ namespace TPREmployeePaySolution.Tests
         }
 
         [Fact]
-        public void Cant_Create_Permanent_Employee_With_Negative_Salary()
+        public void Can_Not_Create_Permanent_Employee_With_Negative_Salary()
         {
             // Arrange
             var employeeName = "Harry";
             var annualSalary = -1000.22m;
             var annualBonus = 1000;
             var startDate = DateTimeOffset.UtcNow;
-
-            // Act
-            //var employee = new PermanentEmployee(employeeName, annualSalary, annualBonus);
-
+            
             Assert.Throws<Exception>(() => new PermanentEmployee(employeeName, annualSalary, annualBonus, startDate));
         }
 
         [Fact]
-        public void Cant_Create_Permanent_Employee_With_Negative_WeeksWorked()
+        public void Can_Not_Create_Permanent_Employee_With_Negative_AnnualBonus()
         {
             // Arrange
             var employeeName = "Harry";
             var annualSalary = 1000.21m;
             var annualBonus = -568534;
             var startDate = DateTimeOffset.UtcNow;
-
-            // Act
 
             // Assert
             Assert.Throws<Exception>(() => new PermanentEmployee(employeeName, annualSalary, annualBonus, startDate));
@@ -65,13 +60,13 @@ namespace TPREmployeePaySolution.Tests
         }
 
         [Fact]
-        public void Permanent_Employee_Will_Have_Null_End_Date_By_Default()
+        public void Permanent_Employee_Will_Have_MinValue_End_Date_By_Default()
         {
             // Act
             var employee = new PermanentEmployee("Harry", 33000, 3000, new DateTimeOffset(2019, 10, 9, 0, 0, 0, TimeSpan.Zero));
 
             // Assert
-            Assert.Null(employee.EndDate);
+            Assert.Equal(DateTimeOffset.MinValue, employee.EndDate);
         }
 
         [Fact]
@@ -141,6 +136,18 @@ namespace TPREmployeePaySolution.Tests
 
             // Assert
             Assert.Equal(expectedType, actualType);
+        }
+
+        [Fact]
+        public void Employee_Has_An_ID()
+        {
+            // Arrange
+
+            // Act
+            var actualId = _employee.EmployeeID;
+
+            // Assert
+            Assert.NotEqual(Guid.Empty, actualId);
         }
 
     }

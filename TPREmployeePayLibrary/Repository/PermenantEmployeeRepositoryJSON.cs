@@ -13,8 +13,7 @@ namespace TPREmployeePayLibrary.Repository
         private readonly ILog _log = LogManager.GetLogger(typeof(PermanentEmployeeRepositoryJSON));
 
         private readonly List<PermanentEmployee> _employees;
-
-
+        
         public PermanentEmployeeRepositoryJSON()
         {
             _employees = LoadFromFile();
@@ -96,7 +95,6 @@ namespace TPREmployeePayLibrary.Repository
             {
                 fileInfo.Directory.Create();
                 fileInfo.Create().Dispose();
-                //File.Create(JSONPath).Dispose();
             }
             using var file = File.CreateText(JSONPath);
             var serializer = new JsonSerializer
@@ -136,7 +134,7 @@ namespace TPREmployeePayLibrary.Repository
 
             if(employeeToUpdate == null)
             {
-                _log.Warn("Employee does not exist.");
+                _log.Warn("Employee could not be found. Was the Id changed?");
                 return false;
             }
 

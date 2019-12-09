@@ -2,7 +2,7 @@
 
 namespace TPREmployeePayLibrary.Entities
 {
-    public class Employee
+    public abstract class Employee
     {
         public Guid EmployeeID { get; set; }
 
@@ -24,12 +24,13 @@ namespace TPREmployeePayLibrary.Entities
         {
             EmployeeID = Guid.NewGuid();
             this.Name = Name;
+            this.StartDate = DateTimeOffset.UtcNow.Date;
+            this.EndDate = DateTimeOffset.MinValue;
         }
 
         public Employee(string Name, DateTimeOffset StartDate) : this(Name)
         {
             this.StartDate = StartDate;
-            this.EndDate = DateTimeOffset.MinValue;
         }
     }
 }
