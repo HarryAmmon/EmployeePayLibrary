@@ -21,30 +21,25 @@ namespace TPREmployeePaySolution.Tests
         }
 
         [Fact]
-        public void Cant_Create_Permanent_Employee_With_Negative_Salary()
+        public void Can_Not_Create_Permanent_Employee_With_Negative_Salary()
         {
             // Arrange
             var employeeName = "Harry";
             var annualSalary = -1000.22m;
             var annualBonus = 1000;
             var startDate = DateTimeOffset.UtcNow;
-
-            // Act
-            //var employee = new PermanentEmployee(employeeName, annualSalary, annualBonus);
-
+            
             Assert.Throws<Exception>(() => new PermanentEmployee(employeeName, annualSalary, annualBonus, startDate));
         }
 
         [Fact]
-        public void Cant_Create_Permanent_Employee_With_Negative_WeeksWorked()
+        public void Can_Not_Create_Permanent_Employee_With_Negative_AnnualBonus()
         {
             // Arrange
             var employeeName = "Harry";
             var annualSalary = 1000.21m;
             var annualBonus = -568534;
             var startDate = DateTimeOffset.UtcNow;
-
-            // Act
 
             // Assert
             Assert.Throws<Exception>(() => new PermanentEmployee(employeeName, annualSalary, annualBonus, startDate));
@@ -141,6 +136,18 @@ namespace TPREmployeePaySolution.Tests
 
             // Assert
             Assert.Equal(expectedType, actualType);
+        }
+
+        [Fact]
+        public void Employee_Has_An_ID()
+        {
+            // Arrange
+
+            // Act
+            var actualId = _employee.EmployeeID;
+
+            // Assert
+            Assert.NotEqual(Guid.Empty, actualId);
         }
 
     }

@@ -107,5 +107,15 @@ namespace TPREmployeePaySolution.Tests
             // Assert
             Assert.Equal(expectedType, actualType);
         }
+
+        [Fact]
+        public void Temp_Employee_Has_Id()
+        {
+            // Arrange
+            var actualId = _employee.EmployeeID;
+
+            // Assert
+            Assert.NotEqual(Guid.Empty, actualId);
+        }
     }
 }

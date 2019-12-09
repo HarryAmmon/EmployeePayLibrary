@@ -41,17 +41,43 @@ namespace TPREmployeePaySolution.Tests
         }
 
         [Fact]
+        public void An_Employee_With_No_Id_Will_Be_Assigned_If_When_Added_To_Repo()
+        {
+            // Arrange
+            var employee = new TempEmployee("Harry");
+            employee.EmployeeID = Guid.Empty;
+
+            // Act
+            var actualResult = _repo.CreateTempEmployee(employee).EmployeeID;
+
+            // Arrange
+            Assert.NotEqual(Guid.Empty, actualResult);
+        }
+
+        [Fact]
         public void Can_Delete_Temp_Employee()
         {
             // Arrange
-            var employeeToDelete = _helper.SearchJSONForTempEmployee("Seth Cox");
+            var employeeToDelete = _helper.SearchJSONForTempEmployee("Seth Cox").EmployeeID;
 
             // Act
-            _repo.DeleteTempEmployee(employeeToDelete.EmployeeID);
-            var expectedResult = _helper.SearchJSONForTempEmployee(employeeToDelete.EmployeeID);
+            var expectedResult = _repo.DeleteTempEmployee(employeeToDelete);
 
             // Assert
-            Assert.Null(expectedResult);
+            Assert.True(expectedResult);
+        }
+
+        [Fact]
+        public void Deleting_Employee_That_Does_Not_Exist_Returns_False()
+        {
+            // Arrage
+            var employeeToDelete = Guid.NewGuid();
+
+            // Act
+            var expectedResult = _repo.DeleteTempEmployee(employeeToDelete);
+
+            // Assert
+            Assert.False(expectedResult);
         }
 
         [Fact]
@@ -78,6 +104,76 @@ namespace TPREmployeePaySolution.Tests
             // Assert
             Assert.Equal(employee.EmployeeID, actualResult.EmployeeID);
         }
-                
+
+        [Fact]
+        public void Reading_Employee_That_Does_Not_Exist_Returns_Null()
+        {
+            // Arrange
+            var employeeId = Guid.NewGuid();
+
+            // Act
+            var actualResult = _repo.ReadTempEmployee(employeeId);
+
+            // Assert
+            Assert.Null(actualResult);
+        }
+
+        [Fact]
+        public void Can_Update_Employee_Name()
+        {
+            // Arrange
+            var employeeToUpdate = _helper.SearchJSONForTempEmployee("Duncan Queen");
+
+            // Act
+            employeeToUpdate.Name = "Gary L";
+            var actualResult = _repo.UpdateTempEmployee(employeeToUpdate);
+
+            // Assert
+            Assert.True(actualResult);
+        }
+
+        [Fact]
+        public void Can_Update_Employee_DailyRate()
+        {
+            // Arrange
+            var employeeToUpdate = _helper.SearchJSONForTempEmployee("Tilly Duff");
+
+            // Act
+            employeeToUpdate.DailyRate = 8542.00m;
+            var actualResult = _repo.UpdateTempEmployee(employeeToUpdate);
+
+            // Assert
+            Assert.True(actualResult);
+        }
+
+        //[Fact]
+        //public void Can_Update_Employee_AnnualBonus()
+        //{
+        //    // Arrange
+        //    var employeeToUpdate = _helper.SearchJSONForTempEmployee("Ashton Botwright");
+
+        //    // Act
+        //    employeeToUpdate.AnnualBonus = 101.01m;
+        //    var actualResult = _repo.UpdateTempEmployee(employeeToUpdate);
+
+        //    // Assert
+        //    Assert.True(actualResult);
+
+        //}
+
+        [Fact]
+        public void Can_Update_Employee_EndDate()
+        {
+            // Arrange
+            var employeeToUpdate = _helper.SearchJSONForTempEmployee("Patrick Maynard");
+
+            // Act
+            employeeToUpdate.EndDate = DateTimeOffset.UtcNow;
+            var actualResult = _repo.UpdateTempEmployee(employeeToUpdate);
+
+            // Assert
+            Assert.True(actualResult);
+        }
     }
 }
+
