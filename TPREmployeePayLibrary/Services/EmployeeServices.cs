@@ -4,11 +4,11 @@ using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Services
 {
-    public static class EmployeeServices
+    public  class EmployeeServices : IEmployeeServices
     {
         private static readonly ILog _Log = LogManager.GetLogger(typeof(EmployeeServices));
 
-        public static double CalcWeeksWorked(this Employee employee)
+        public double CalcWeeksWorked(Employee employee)
         {
             _Log.Info($"Calculating WeeksWorked for employee: {employee.EmployeeID}.");
 

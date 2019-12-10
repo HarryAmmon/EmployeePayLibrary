@@ -3,11 +3,11 @@ using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Services
 {
-    public static class PermanentEmployeeServices 
+    public class PermanentEmployeeServices : IPermanentEmployeeServices
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(PermanentEmployeeServices));
+        private readonly ILog _log = LogManager.GetLogger(typeof(PermanentEmployeeServices));
 
-        public static decimal CalculateAnnualPay(this PermanentEmployee employee)
+        public decimal CalculateAnnualPay(PermanentEmployee employee)
         {
             decimal annualPay = employee.AnnualSalary + employee.AnnualBonus;
             _log.Debug($"Calculated annual pay {annualPay}");
@@ -15,7 +15,7 @@ namespace TPREmployeePayLibrary.Services
             return annualPay;
         }
 
-        public static decimal CalculateHourlyPay(this PermanentEmployee employee)
+        public decimal CalculateHourlyPay(PermanentEmployee employee)
         {
             decimal hourlyPay = (((employee.AnnualSalary / 52) / 5) / 7);
             _log.Debug($"Calculated hourly pay {hourlyPay}");
