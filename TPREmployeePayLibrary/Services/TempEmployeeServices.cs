@@ -3,11 +3,11 @@ using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Services
 {
-    public static class TempEmployeeServices
+    public class TempEmployeeServices : ITempEmployeeServices
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TempEmployeeServices));
+        private readonly ILog _log = LogManager.GetLogger(typeof(TempEmployeeServices));
          
-        public static decimal CalculateAnnualPay(this TempEmployee employee)
+        public decimal CalculateAnnualPay(TempEmployee employee)
         {
             var weeksWorked = (decimal)employee.CalcWeeksWorked();
             var annualPay = (employee.DailyRate * 5 * weeksWorked);
@@ -16,7 +16,7 @@ namespace TPREmployeePayLibrary.Services
             return annualPay;
         }
 
-        public static decimal CalculateHourlyPay(this TempEmployee employee)
+        public decimal CalculateHourlyPay(TempEmployee employee)
         {
             if (employee.DailyRate > 0)
             {
