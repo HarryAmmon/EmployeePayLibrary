@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TPREmployeePayLibrary.Entities;
 
-namespace TPREmployeePayLibrary
+namespace TPREmployeePayLibrary.Services
 {
     public interface IEmployeeServices
     {
