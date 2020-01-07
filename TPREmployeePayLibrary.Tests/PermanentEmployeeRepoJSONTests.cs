@@ -47,13 +47,13 @@ namespace TPREmployeePayLibrary.Tests
         {
             // Arrange
             var employee = new PermanentEmployee("Harry");
-            employee.EmployeeID = Guid.Empty;
+            employee.EmployeeID = 0;
 
             // Act
             var actualResult = _repo.CreatePermanentEmployee(employee).EmployeeID;
 
             // Assert
-            Assert.NotEqual(Guid.Empty, actualResult);
+            Assert.NotEqual(0, actualResult);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace TPREmployeePayLibrary.Tests
         public void Deleting_Employee_That_Does_Not_Exist_Returns_False()
         {
             // Arrange
-            var employeeId = Guid.NewGuid();
+            var employeeId = 1986;
 
             // Act
             var actualResult = _repo.DeletePermanentEmployee(employeeId);
@@ -111,7 +111,7 @@ namespace TPREmployeePayLibrary.Tests
         public void Reading_Employee_That_Does_Not_Exist_Returns_Null()
         {
             // Arrange
-            var employeeId = Guid.NewGuid();
+            var employeeId = 23810;
 
             // Act
             var actualResult = _repo.ReadPermanentEmployee(employeeId);

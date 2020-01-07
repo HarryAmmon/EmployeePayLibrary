@@ -12,7 +12,7 @@ namespace TPREmployeePayLibrary.Repository
             throw new NotImplementedException();
         }
 
-        public bool DeleteTempEmployee(Guid id)
+        public bool DeleteTempEmployee(int id)
         {
             throw new NotImplementedException();
         }
@@ -22,7 +22,7 @@ namespace TPREmployeePayLibrary.Repository
             throw new NotImplementedException();
         }
 
-        public TempEmployee ReadTempEmployee(Guid id)
+        public TempEmployee ReadTempEmployee(int id)
         {
             throw new NotImplementedException();
         }

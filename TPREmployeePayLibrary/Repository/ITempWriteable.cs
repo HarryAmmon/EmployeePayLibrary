@@ -12,7 +12,7 @@ namespace TPREmployeePayLibrary.Repository
 
         bool UpdateTempEmployee(TempEmployee employee);
 
-        bool DeleteTempEmployee(Guid id);
+        bool DeleteTempEmployee(int id);
         
         bool SaveChanges();
 

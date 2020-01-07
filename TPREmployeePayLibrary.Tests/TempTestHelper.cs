@@ -27,7 +27,7 @@ namespace TPREmployeePayLibrary.Tests
             return employee;
         }
 
-        public TempEmployee SearchJSONForTempEmployee(Guid id)
+        public TempEmployee SearchJSONForTempEmployee(int id)
         {
             var employees = _repo.ReadAllTempEmployees();
 

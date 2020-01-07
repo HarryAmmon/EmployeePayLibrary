@@ -41,16 +41,17 @@ namespace TPREmployeePayLibrary.Repository
         {
             _log.Debug($"Adding Temp Employee. EmployeeID: {employee.EmployeeID}.");
 
-            if (employee.EmployeeID.Equals(Guid.Empty))
+            if (employee.EmployeeID == 0)
             {
-                employee.EmployeeID = Guid.NewGuid();
+                var rnd = new Random();
+                employee.EmployeeID = rnd.Next(1,999999);
             }
             _employees.Add(employee);
 
             return employee;
         }
 
-        public bool DeleteTempEmployee(Guid id)
+        public bool DeleteTempEmployee(int id)
         {
             _log.Info($"Deleting Temp Employee. ID: {id}");
 
@@ -77,7 +78,7 @@ namespace TPREmployeePayLibrary.Repository
             return _employees;
         }
 
-        public TempEmployee ReadTempEmployee(Guid id)
+        public TempEmployee ReadTempEmployee(int id)
         {
             _log.Info($"Searching for Temp Employee. ID: {id}");
 

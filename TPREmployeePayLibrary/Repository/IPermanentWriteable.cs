@@ -1,5 +1,6 @@
 ﻿using TPREmployeePayLibrary.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace TPREmployeePayLibrary.Repository
 {
@@ -7,10 +8,14 @@ namespace TPREmployeePayLibrary.Repository
     {
         PermanentEmployee CreatePermanentEmployee(PermanentEmployee employee);
 
-        bool DeletePermanentEmployee(Guid id);
+        bool DeletePermanentEmployee(int id);
 
         bool UpdatePermanentEmployee(PermanentEmployee employee);
 
-        bool SaveChanges();
+        Task<PermanentEmployee> CreatePermanentEmployeeAsync(PermanentEmployee employee);
+
+        Task DeletePermanentEmployeeAsync(int id);
+
+        Task<PermanentEmployee> UpdatePermanentEmployeeAsync(PermanentEmployee employee);
     }
 }

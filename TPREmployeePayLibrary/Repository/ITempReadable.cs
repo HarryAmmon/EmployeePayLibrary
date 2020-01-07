@@ -7,7 +7,7 @@ namespace TPREmployeePayLibrary.Repository
 {
     public interface ITempReadable
     {
-        TempEmployee ReadTempEmployee(Guid id);
+        TempEmployee ReadTempEmployee(int id);
         List<TempEmployee> ReadAllTempEmployees();
     }
 }

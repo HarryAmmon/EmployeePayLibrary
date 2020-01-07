@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using TPREmployeePayLibrary.Entities;
 
 namespace TPREmployeePayLibrary.Repository
@@ -40,15 +41,16 @@ namespace TPREmployeePayLibrary.Repository
         public PermanentEmployee CreatePermanentEmployee(PermanentEmployee employee)
         {
             _log.Debug($"Adding Permanent Employee. EmployeeID: {employee.EmployeeID}.");
-            if (employee.EmployeeID.Equals(Guid.Empty))
+            if (employee.EmployeeID == 0)
             {
-                employee.EmployeeID = Guid.NewGuid();
+                var rnd = new Random();
+                employee.EmployeeID = rnd.Next(1,999999);
             }
             _employees.Add(employee);
             return employee;
         }
 
-        public bool DeletePermanentEmployee(Guid id)
+        public bool DeletePermanentEmployee(int id)
         {
             _log.Info($"Deleting Permanent Employee. ID: {id}");
 
@@ -75,7 +77,7 @@ namespace TPREmployeePayLibrary.Repository
             return _employees;
         }
 
-        public PermanentEmployee ReadPermanentEmployee(Guid id)
+        public PermanentEmployee ReadPermanentEmployee(int id)
         {
             _log.Info($"Searching for Permanent Employee. ID: {id}");
 
@@ -154,6 +156,31 @@ namespace TPREmployeePayLibrary.Repository
             CreatePermanentEmployee(employee);
 
             return SaveChanges();
+        }
+
+        public Task<PermanentEmployee> ReadPermanentEmployeeAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<PermanentEmployee>> ReadAllPermanentEmployeesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PermanentEmployee> CreatePermanentEmployeeAsync(PermanentEmployee employee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeletePermanentEmployeeAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PermanentEmployee> UpdatePermanentEmployeeAsync(PermanentEmployee employee)
+        {
+            throw new NotImplementedException();
         }
     }
 }

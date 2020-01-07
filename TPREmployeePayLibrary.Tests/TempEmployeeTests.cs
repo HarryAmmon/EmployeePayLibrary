@@ -115,7 +115,7 @@ namespace TPREmployeePayLibrary.Tests
             var actualId = _employee.EmployeeID;
 
             // Assert
-            Assert.NotEqual(Guid.Empty, actualId);
+            Assert.NotEqual(0, actualId);
         }
     }
 }
