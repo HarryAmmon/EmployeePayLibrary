@@ -109,13 +109,13 @@ namespace TPREmployeePayLibrary.Tests
         }
 
         [Fact]
-        public void Temp_Employee_Has_Id()
+        public void Temp_Employee_Has_Id_Of_Zero()
         {
             // Arrange
             var actualId = _employee.EmployeeID;
 
             // Assert
-            Assert.NotEqual(0, actualId);
+            Assert.Equal(0, actualId);
         }
     }
 }

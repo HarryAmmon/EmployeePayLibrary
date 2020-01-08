@@ -22,10 +22,10 @@ namespace TPREmployeePayLibrary.Repository
         public async Task<PermanentEmployee> CreatePermanentEmployeeAsync(PermanentEmployee employee)
         {
             var sql =
-                "INSERT INTO Employee (Name, StartDate, EndDate, ManagerId, TeamId, AnnualSalary, AnnualBonus) VALUES(@Name, @StartDate, @EndDate, @ManagerId, @TeamId, @AnnualSalary, @AnnualBonus)" +
+                "INSERT INTO Employees (Name, StartDate, EndDate, AnnualSalary, AnnualBonus) VALUES(@Name, @StartDate, @EndDate, @AnnualSalary, @AnnualBonus)" +
                 "SELECT CAST(SCOPE_IDENTITY() as INT)";
 
-            var result =  _db.Query<int>(sql, employee);
+            var result =  await _db.QueryAsync<int>(sql, employee);
             employee.EmployeeID = result.FirstOrDefault();
 
             return employee;
@@ -41,19 +41,33 @@ namespace TPREmployeePayLibrary.Repository
             throw new NotImplementedException();
         }
 
-        public Task DeletePermanentEmployeeAsync(int id)
+        public async Task<bool> DeletePermanentEmployeeAsync(int id)
         {
-            throw new NotImplementedException();
+            var sql =
+                "DELETE FROM Employees WHERE EmployeeId = @EmployeeId";
+            var result = await _db.ExecuteAsync(sql, new { EmployeeID = id });
+
+            if(result == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
         public List<PermanentEmployee> ReadAllPermanentEmployees()
-        {
-            throw new NotImplementedException();
+         {
+            var sql = "SELECT * FROM Employees";
+            var result = _db.Query<PermanentEmployee>(sql);
+
+            return result.ToList();
         }
 
-        public Task<List<PermanentEmployee>> ReadAllPermanentEmployeesAsync()
+        public async Task<List<PermanentEmployee>> ReadAllPermanentEmployeesAsync()
         {
-            throw new NotImplementedException();
+            var sql = "SELECT * FROM Employees";
+            var result = await _db.QueryAsync<PermanentEmployee>(sql);
+
+            return result.ToList();
         }
 
         public PermanentEmployee ReadPermanentEmployee(int id)
@@ -61,9 +75,14 @@ namespace TPREmployeePayLibrary.Repository
             throw new NotImplementedException();
         }
 
-        public Task<PermanentEmployee> ReadPermanentEmployeeAsync(int id)
+        public async Task<PermanentEmployee> ReadPermanentEmployeeAsync(int id)
         {
-            throw new NotImplementedException();
+            var sql = "SELECT * FROM Employees " +
+                "WHERE EmployeeId = @EmployeeId";
+
+            var result = await _db.QueryAsync<PermanentEmployee>(sql, new { EmployeeId = id });
+
+            return result.FirstOrDefault();
         }
 
         public bool UpdatePermanentEmployee(PermanentEmployee employee)
@@ -71,14 +90,21 @@ namespace TPREmployeePayLibrary.Repository
             throw new NotImplementedException();
         }
 
-        public Task<PermanentEmployee> UpdatePermanentEmployeeAsync(PermanentEmployee employee)
+        public async Task<PermanentEmployee> UpdatePermanentEmployeeAsync(PermanentEmployee employee)
         {
-            throw new NotImplementedException();
-        }
+            var sql = "UPDATE Employees " +
+                        "SET Name = @Name, " +
+                        "    EndDate = @EndDate, " +
+                        "   AnnualSalary = @AnnualSalary, " +
+                        "   AnnualBonus = @AnnualBonus ";// +
+                        //"   TeamId = @TeamId, " +
+                        //"   ManagerId = @ManagerId";
 
-        PermanentEmployee IPermanentWriteable.CreatePermanentEmployee(PermanentEmployee employee)
-        {
-            throw new NotImplementedException();
+            var result = await _db.ExecuteAsync(sql, employee);
+
+            if (result == 0) { return null; }
+            
+            return employee;
         }
     }
 }

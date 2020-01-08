@@ -173,7 +173,7 @@ namespace TPREmployeePayLibrary.Repository
             throw new NotImplementedException();
         }
 
-        public Task DeletePermanentEmployeeAsync(int id)
+        public Task<bool> DeletePermanentEmployeeAsync(int id)
         {
             throw new NotImplementedException();
         }

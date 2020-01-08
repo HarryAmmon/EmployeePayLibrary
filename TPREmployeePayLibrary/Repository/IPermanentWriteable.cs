@@ -14,7 +14,7 @@ namespace TPREmployeePayLibrary.Repository
 
         Task<PermanentEmployee> CreatePermanentEmployeeAsync(PermanentEmployee employee);
 
-        Task DeletePermanentEmployeeAsync(int id);
+        Task<bool> DeletePermanentEmployeeAsync(int id);
 
         Task<PermanentEmployee> UpdatePermanentEmployeeAsync(PermanentEmployee employee);
     }

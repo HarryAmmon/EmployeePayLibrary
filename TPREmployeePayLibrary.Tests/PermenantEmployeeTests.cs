@@ -139,7 +139,7 @@ namespace TPREmployeePayLibrary.Tests
         }
 
         [Fact]
-        public void Employee_Has_An_ID()
+        public void Employee_Has_An_ID_Of_Zero()
         {
             // Arrange
 
@@ -147,7 +147,7 @@ namespace TPREmployeePayLibrary.Tests
             var actualId = _employee.EmployeeID;
 
             // Assert
-            Assert.NotEqual(0, actualId);
+            Assert.Equal(0, actualId);
         }
 
     }

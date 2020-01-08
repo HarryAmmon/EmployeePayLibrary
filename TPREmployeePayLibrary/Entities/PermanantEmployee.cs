@@ -26,5 +26,10 @@ namespace TPREmployeePayLibrary.Entities
             }
             else { throw new Exception("Annual Salary and Annual Bonus must be 0 or greater."); }
         }
+
+        public PermanentEmployee() : base()
+        {
+
+        }
     }
 }

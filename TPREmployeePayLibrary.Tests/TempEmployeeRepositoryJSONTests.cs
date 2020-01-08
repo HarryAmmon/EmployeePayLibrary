@@ -37,7 +37,7 @@ namespace TPREmployeePayLibrary.Tests
             var actualResult = _helper.SearchJSONForTempEmployee(employee.EmployeeID).EmployeeID;
 
             // Assert
-            Assert.Equal(expectedResult, actualResult);
+            Assert.NotEqual(expectedResult, actualResult);
         }
 
         [Fact]

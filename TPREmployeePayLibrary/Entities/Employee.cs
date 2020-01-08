@@ -32,5 +32,10 @@ namespace TPREmployeePayLibrary.Entities
         {
             this.StartDate = StartDate;
         }
+
+        public Employee()
+        {
+
+        }
     }
 }

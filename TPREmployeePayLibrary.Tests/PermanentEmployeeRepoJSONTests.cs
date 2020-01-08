@@ -39,7 +39,7 @@ namespace TPREmployeePayLibrary.Tests
             var actualResult = _repo.CreatePermanentEmployee(employee).EmployeeID;
 
             // Assert
-            Assert.Equal(expectedResult, actualResult);
+            Assert.NotEqual(expectedResult, actualResult);
         }
 
         [Fact]
